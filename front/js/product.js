@@ -60,8 +60,6 @@ const panier = () => {
         let select = document.getElementById("colors");
         console.log('couleur choisie :',select.value);
         
-      
-        
         //new ojet tableau
         const newObjectArray = Object.assign({}, produitData, {
             couleurChoisie: `${select.value}`,
@@ -81,24 +79,25 @@ const panier = () => {
         }
         else if (produitTableau != null) {
             for (i = 0; i < produitTableau.length; i++){
-                console.log('test');
+                console.log('!= null');
                 // meme produit et meme couleur = ++quantite
                 if (produitTableau[i]._id == produitData._id && produitTableau[i].couleurChoisie == select.value){
                     return (
                         produitTableau[i].quantite ++,
-                        console.log("quantitee++"),
                         localStorage.setItem("produit", JSON.stringify(produitTableau)),
-                        produitTableau = JSON.parse(localStorage.getItem("produit"))
+                        produitTableau = JSON.parse(localStorage.getItem("produit")),
+                        console.log("quantite++")
                     );
                 }
             }
             for (i = 0; i < produitTableau.length; i++){
                 //meme id et pas meme couleur ou id different
                 if(produitTableau[i]._id == produitData._id && produitTableau[i].teinte != select.value || produitTableau[i]._id != produitData._id){
-                    return (console.log("nouveau"),
+                    return (
                     produitTableau.push(newObjectArray),
                     localStorage.setItem('produit', JSON.stringify(produitTableau)),
-                    produitTableau = JSON.parse(localStorage.getItem("produit"))
+                    produitTableau = JSON.parse(localStorage.getItem("produit")),
+                    console.log("nouveau article panier")
                     );
                 }
 
