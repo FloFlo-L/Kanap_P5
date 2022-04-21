@@ -25,7 +25,7 @@ const produitsDisplay = async () => {
             </article>
         </a>
         `
-        console.log('affiche la carte de', produits.name);
+        console.log('affiche produit', produits.name);
     }
 };
 

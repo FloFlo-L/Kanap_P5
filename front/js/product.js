@@ -32,13 +32,21 @@ const produitDisplay = async () => {
     console.log('affiche les détails de :', produitData.name);
     
     //choix couleur
-    let select = document.getElementById("colors");
+    let selectCouleur = document.getElementById("colors");
     
     for(let couleur of produitData.colors){                   
         let option = document.createElement("option");
         option.innerHTML = couleur;
-        select.appendChild(option);
+        selectCouleur.appendChild(option);
     }
+
+    // // choix quantite
+    // let selectQuantite = document.getElementById("quantity");
+    // for (let quantite of  produitData.quantite){
+    //     let value = document
+    // }
+
+
 panier(productId);
 };
 
@@ -49,7 +57,7 @@ const panier = () => {
     let bouton = document.getElementById(productId);
     console.log("le btn \'ajout panier\' a l'id du produit :",bouton);
 
-    // selection couleur + new objet tableau = localStorage
+    // selection couleur + qty = localStorage
     bouton.addEventListener("click", () => {
 
         // localStorage null (rien) !
@@ -57,16 +65,40 @@ const panier = () => {
         console.log(produitTableau);
         
         //valeur choix couleur
-        let select = document.getElementById("colors");
-        console.log('couleur choisie :',select.value);
+        let selectColor = document.getElementById("colors");
+        console.log('couleur choisie :',selectColor.value);
+
+        //valeur choix quantité
+        let selectQuantity = document.getElementById("quantity");
+        console.log('quantité choisie :', selectQuantity.value);
+
         
-        //new ojet tableau
+        //nouveau choix dans tableau
         const newObjectArray = Object.assign({}, produitData, {
-            couleurChoisie: `${select.value}`,
-            quantite : 1,
+            couleurChoisie: `${selectColor.value}`,
+            quantite : `${selectQuantity.value}`,
         });
 
+
+        // function alert color and qty
+        const alertColorQty = () =>{
+            if (selectColor.value == 0 || selectQuantity.value == 0) {
+                alert("Vous avez oublier de sélectionner une couleur ou une quantité")
+                console.log("pas de couleur et qty sélectionné donc localStorage vide");
+                localStorage.clear(product);
+            }
+            else{
+                location.href="cart.html"
+            }
+        }
+        
+
         console.log('ajouter new objet dans tableau / quantite et couleur choisie',newObjectArray);
+
+        //call fucntion alert color and qty
+        if (produitTableau == null || produitTableau != null) {
+            alertColorQty();
+        }
 
         //localStorage null (à remplir) !
         if (produitTableau == null) {
@@ -81,9 +113,9 @@ const panier = () => {
             for (i = 0; i < produitTableau.length; i++){
                 console.log('!= null');
                 // meme produit et meme couleur = ++quantite
-                if (produitTableau[i]._id == produitData._id && produitTableau[i].couleurChoisie == select.value){
+                if (produitTableau[i]._id == produitData._id && produitTableau[i].couleurChoisie == selectColor.value){
                     return (
-                        produitTableau[i].quantite ++,
+                        produitTableau[i].quantite = `${selectQuantity.value}` ,
                         localStorage.setItem("produit", JSON.stringify(produitTableau)),
                         produitTableau = JSON.parse(localStorage.getItem("produit")),
                         console.log("quantite++")
@@ -92,7 +124,7 @@ const panier = () => {
             }
             for (i = 0; i < produitTableau.length; i++){
                 //meme id et pas meme couleur ou id different
-                if(produitTableau[i]._id == produitData._id && produitTableau[i].teinte != select.value || produitTableau[i]._id != produitData._id){
+                if(produitTableau[i]._id == produitData._id && produitTableau[i].teinte != selectColor.value || produitTableau[i]._id != produitData._id){
                     return (
                     produitTableau.push(newObjectArray),
                     localStorage.setItem('produit', JSON.stringify(produitTableau)),
@@ -100,10 +132,8 @@ const panier = () => {
                     console.log("nouveau article panier")
                     );
                 }
-
             }    
-        }
-
+        } 
     });
     return (produitTableau = JSON.parse(localStorage.getItem("produit")));
 };
