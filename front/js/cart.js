@@ -129,11 +129,6 @@ const claculProduit = async (panierDisplay, morelessQuantite, deleteProduct) => 
   document.querySelector(".cart__price").innerHTML = `
   <p>Total <span id="totalQuantity">${eval(quantiteTotal.join("+"))}</span> article(s) : <span id="totalPrice">${eval(produitPrice.join("+"))}</span> €</p>
   `
-  console.log(addProduit);
-
-  
-  
-  console.log(addProduit);
 }
 
   
