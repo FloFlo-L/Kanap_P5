@@ -129,6 +129,11 @@ const claculProduit = async (panierDisplay, morelessQuantite, deleteProduct) => 
   document.querySelector(".cart__price").innerHTML = `
   <p>Total <span id="totalQuantity">${eval(quantiteTotal.join("+"))}</span> article(s) : <span id="totalPrice">${eval(produitPrice.join("+"))}</span> €</p>
   `
+  console.log(addProduit);
+
+  
+  
+  console.log(addProduit);
 }
 
   
@@ -237,16 +242,10 @@ function getForm() {
 }
 getForm();
 
-function postForm (){
-
-  const order = document.getElementById('order');  
-
-  order.addEventListener('click', (event) => {
-  event.preventDefault();
-
+function alertForm() {
   // formulaire vide = alerte
   if (document.getElementById('firstName').value==''){
-    alert("Vous n'avez pas indiqué votre Prénom // Recompléter le formualire")
+    alert("Vous n'avez pas indiqué votre Prénom")
     return reload();
   }else if (document.getElementById('lastName').value=='') {
     alert("Vous n'avez pas indiqué votre Nom")
@@ -261,6 +260,14 @@ function postForm (){
     alert("Vous n'avez pas indiqué votre Email")
     return reload();
   }
+}
+
+function postForm (){
+
+  const order = document.getElementById('order');  
+
+  order.addEventListener('click', (event) => {
+  event.preventDefault();
 
   // je récupère les données du formulaire dans un objet
   const contact = {
@@ -274,7 +281,7 @@ function postForm (){
   //Construction d'un array d'id depuis le local storage
   let products = [];
   for (let i = 0; i<addProduit.length;i++) {
-      products.push(addProduit[i]._id);
+      products.push(addProduit[i]);
   }
   console.log(products);
 
@@ -285,7 +292,6 @@ function postForm (){
     products,
   }
   
-
   // j'envoie le formulaire + localStorage (sendFormData) 
   // ... que j'envoie au serveur
 
@@ -298,6 +304,8 @@ function postForm (){
   };
   console.log(sendFormData);
   console.log(options);
+
+  alertForm();
 
   fetch("http://localhost:3000/api/products/order", options)
       .then(response => response.json())

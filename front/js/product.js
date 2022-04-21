@@ -40,20 +40,13 @@ const produitDisplay = async () => {
         selectCouleur.appendChild(option);
     }
 
-    // // choix quantite
-    // let selectQuantite = document.getElementById("quantity");
-    // for (let quantite of  produitData.quantite){
-    //     let value = document
-    // }
-
-
 panier(productId);
 };
 
 produitDisplay();
 
 const panier = () => {
-    // le bouton ajout panier à l'id du produit
+    // le bouton ajout panier a l'id du produit
     let bouton = document.getElementById(productId);
     console.log("le btn \'ajout panier\' a l'id du produit :",bouton);
 
@@ -118,13 +111,13 @@ const panier = () => {
                         produitTableau[i].quantite = `${selectQuantity.value}` ,
                         localStorage.setItem("produit", JSON.stringify(produitTableau)),
                         produitTableau = JSON.parse(localStorage.getItem("produit")),
-                        console.log("quantite++")
+                        console.log("quantite choisie")
                     );
                 }
             }
             for (i = 0; i < produitTableau.length; i++){
                 //meme id et pas meme couleur ou id different
-                if(produitTableau[i]._id == produitData._id && produitTableau[i].teinte != selectColor.value || produitTableau[i]._id != produitData._id){
+                if(produitTableau[i]._id == produitData._id && produitTableau[i].couleurChoisie != selectColor.value || produitTableau[i]._id != produitData._id){
                     return (
                     produitTableau.push(newObjectArray),
                     localStorage.setItem('produit', JSON.stringify(produitTableau)),
