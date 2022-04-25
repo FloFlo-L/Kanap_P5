@@ -73,7 +73,6 @@ const panier = () => {
             quantite : `${selectQuantity.value}`,
         });
 
-
         // function alert color and qty
         const alertColorQty = () =>{
             if (selectColor.value == 0 || selectQuantity.value == 0) {
@@ -106,18 +105,18 @@ const panier = () => {
         else if (produitTableau != null) {
             for (i = 0; i < produitTableau.length; i++){
                 console.log('!= null');
-                // meme produit et meme couleur = ++quantite
+                // meme produit et meme couleur = meme article panier
                 if (produitTableau[i]._id == produitData._id && produitTableau[i].couleurChoisie == selectColor.value){
                     return (
                         produitTableau[i].quantite = `${selectQuantity.value}` ,
                         localStorage.setItem("produit", JSON.stringify(produitTableau)),
                         produitTableau = JSON.parse(localStorage.getItem("produit")),
-                        console.log("quantite choisie")
+                        console.log("meme article panier")
                     );
                 }
             }
             for (i = 0; i < produitTableau.length; i++){
-                //meme id et pas meme couleur ou id different
+                //meme id et pas meme couleur ou id different = nouveau article
                 if(produitTableau[i]._id == produitData._id && produitTableau[i].couleurChoisie != selectColor.value || produitTableau[i]._id != produitData._id){
                     return (
                     produitTableau.push(newObjectArray),

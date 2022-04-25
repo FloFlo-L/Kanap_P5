@@ -1,5 +1,4 @@
 let addProduit = JSON.parse(localStorage.getItem("produit"));
-
 // afficher panier
 const panierDisplay = async () => {
   console.log("salut !!!");
@@ -40,7 +39,6 @@ const panierDisplay = async () => {
     claculProduit();
   } 
 }
-
 panierDisplay();
 
 
@@ -150,26 +148,6 @@ function getForm() {
     validFirstName(this);
   });
 
-  // Ecoute de la modification du nom
-  form.lastName.addEventListener('change', function() {
-    validLastName(this);
-  });
-
-  // Ecoute de la modification de l'adresse
-  form.address.addEventListener('change', function() {
-    validAddress(this);
-  });
-
-  // Ecoute de la modification de la ville
-  form.city.addEventListener('change', function() {
-    validCity(this);
-  });
-
-  // Ecoute de la modification du prénom
-  form.email.addEventListener('change', function() {
-    validEmail(this);
-  });
-
   //validation du prénom
   const validFirstName = function(inputFirstName) {
     let firstNameErrorMsg = inputFirstName.nextElementSibling;
@@ -183,8 +161,13 @@ function getForm() {
     }
   };
 
-   //validation du nom
-   const validLastName = function(inputLastName) {
+  // Ecoute de la modification du nom
+  form.lastName.addEventListener('change', function() {
+    validLastName(this);
+  });
+
+  //validation du nom
+  const validLastName = function(inputLastName) {
     let lastNameErrorMsg = inputLastName.nextElementSibling;
 
     if (charRegExp.test(inputLastName.value)) {
@@ -195,6 +178,11 @@ function getForm() {
         lastNameErrorMsg.style.color = 'red'
     }
   };
+
+  // Ecoute de la modification de l'adresse
+  form.address.addEventListener('change', function() {
+    validAddress(this);
+  });
 
   //validation de l'adresse
   const validAddress = function(inputAddress) {
@@ -209,6 +197,11 @@ function getForm() {
     }
   };
 
+  // Ecoute de la modification de la ville
+  form.city.addEventListener('change', function() {
+    validCity(this);
+  });
+
   //validation de la ville
   const validCity = function(inputCity) {
     let cityErrorMsg = inputCity.nextElementSibling;
@@ -222,6 +215,11 @@ function getForm() {
     }
   };
 
+  // Ecoute de la modification du mail
+  form.email.addEventListener('change', function() {
+    validEmail(this);
+  });
+
   //validation de l'email
   const validEmail = function(inputEmail) {
     let emailErrorMsg = inputEmail.nextElementSibling;
@@ -233,7 +231,7 @@ function getForm() {
         emailErrorMsg.innerHTML = "Format non conforme";
         emailErrorMsg.style.color = 'red'
     }
-  };
+  };  
 }
 getForm();
 
@@ -280,9 +278,7 @@ function postForm (){
   //Construction d'un array d'id depuis le local storage
   let products = [];
   for (let i = 0; i<addProduit.length;i++) {
-    products.push(addProduit[i]._id);
-    
-      
+    products.push(addProduit[i]._id);     
   }
   console.log(products);
 
@@ -295,7 +291,6 @@ function postForm (){
   
   // j'envoie le formulaire + localStorage (sendFormData) 
   // ... que j'envoie au serveur
-
   const options = {
     method: 'POST',
     body: JSON.stringify(sendFormData),
