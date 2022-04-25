@@ -242,9 +242,11 @@ function alertForm() {
   if (document.getElementById('firstName').value==''){
     alert("Vous n'avez pas indiqué votre Prénom")
     return reload();
+    
   }else if (document.getElementById('lastName').value=='') {
     alert("Vous n'avez pas indiqué votre Nom")
     return reload();
+    
   }else if (document.getElementById('address').value=='') {
     alert("Vous n'avez pas indiqué votre adresse")
     return reload();
@@ -257,12 +259,14 @@ function alertForm() {
   }
 }
 
+
 function postForm (){
 
   const order = document.getElementById('order');  
 
   order.addEventListener('click', (event) => {
   event.preventDefault();
+
 
   // je récupère les données du formulaire dans un objet
   const contact = {
@@ -276,7 +280,9 @@ function postForm (){
   //Construction d'un array d'id depuis le local storage
   let products = [];
   for (let i = 0; i<addProduit.length;i++) {
-      products.push(addProduit[i]);
+    products.push(addProduit[i]._id);
+    
+      
   }
   console.log(products);
 
@@ -306,6 +312,7 @@ function postForm (){
       .then(response => response.json())
       .then(data => {
       localStorage.setItem('orderId', data.orderId);
+      //Passe notre numéro de commande en paramètre de l'adresse de confirmation et nous redirige sur la page de confirmation
       document.location.href = 'confirmation.html?id='+ data.orderId;
     });
 

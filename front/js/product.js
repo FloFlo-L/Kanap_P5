@@ -2,6 +2,7 @@
 let searchParams = new URLSearchParams(window.location.search);
 let productId = searchParams.get('id')
 
+console.log(location.search);
 console.log('récupérer id :' ,productId);
 
 let produitData = [];
