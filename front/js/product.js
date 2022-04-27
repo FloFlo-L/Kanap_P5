@@ -68,9 +68,12 @@ const panier = () => {
 
         
         //nouveau choix dans tableau
-        const newObjectArray = Object.assign({}, produitData, {
+        const newObjectArray = Object.assign(  {
             couleurChoisie: `${selectColor.value}`,
             quantite : `${selectQuantity.value}`,
+            imageUrl : `${produitData.imageUrl}`,
+            name : `${produitData.name}`,
+            _id : `${productId}`,
         });
 
         // function alert color and qty
@@ -108,7 +111,9 @@ const panier = () => {
                 // meme produit et meme couleur = meme article panier
                 if (produitTableau[i]._id == produitData._id && produitTableau[i].couleurChoisie == selectColor.value){
                     return (
-                        produitTableau[i].quantite = `${selectQuantity.value}` ,
+                        alert("RAPPEL : Vous aviez déja choisit cet article ! Ajout en plus de la quantité selectionné"),
+                        produitTableau[i].quantite = Number(selectQuantity.value)+Number(produitTableau[i].quantite),
+                        console.log(produitTableau.quantite),
                         localStorage.setItem("produit", JSON.stringify(produitTableau)),
                         produitTableau = JSON.parse(localStorage.getItem("produit")),
                         console.log("meme article panier")
@@ -117,7 +122,7 @@ const panier = () => {
             }
             for (i = 0; i < produitTableau.length; i++){
                 //meme id et pas meme couleur ou id different = nouveau article
-                if(produitTableau[i]._id == produitData._id && produitTableau[i].couleurChoisie != selectColor.value || produitTableau[i]._id != produitData._id){
+                if(produitTableau[i].couleurChoisie != selectColor.value || produitTableau[i]._id != produitData._id){
                     return (
                     produitTableau.push(newObjectArray),
                     localStorage.setItem('produit', JSON.stringify(produitTableau)),

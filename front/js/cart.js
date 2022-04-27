@@ -1,45 +1,47 @@
 let addProduit = JSON.parse(localStorage.getItem("produit"));
+
 // afficher panier
 const panierDisplay = async () => {
-  console.log("salut !!!");
-
   // addProduit existe ? pas null ou undefined
   if(addProduit) {
     await addProduit;
+  
     console.log(addProduit);
-    
 
-    document.querySelector("#cart__items").innerHTML = addProduit.map((produit) => 
-    `
-    <article class="cart__item" data-id="${produit._id}" data-color="${produit.couleurChoisie}">
-    <div class="cart__item__img">
-      <img src="${produit.imageUrl}" alt="Photographie d'un canapé">
-    </div>
-    <div class="cart__item__content">
-      <div class="cart__item__content__description">
-        <h2>${produit.name}</h2>
-        <p>${produit.couleurChoisie}</p>
-        <p>${produit.price} €</p>
-      </div>
-      <div class="cart__item__content__settings">
-        <div class="cart__item__content__settings__quantity">
-          <p>Qté : </p>
-          <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${produit.quantite}" data-id="${produit._id}" data-color="${produit.couleurChoisie}">
-        </div>
-        <div class="cart__item__content__settings__delete">
-          <p class="deleteItem" data-id="${produit._id}" data-color="${produit.couleurChoisie}">Supprimer</p>
-        </div>
-      </div>
-    </div>
-    </article>
-    `).join("");
-        
-    morelessQuantite();
-    deleteProduct();
-    claculProduit();
+    for(let produit of addProduit){
+      fetch("http://localhost:3000/api/products" + "/" + produit._id)
+      .then(data => data.json())
+      .then(product =>{
+        document.getElementById("cart__items").innerHTML += `
+        <article class="cart__item" data-id="${produit.id}" data-color="${produit.color}">
+          <div class="cart__item__img">
+              <img src="${product.imageUrl}" alt="${product.altTxt}">
+          </div>
+          <div class="cart__item__content">
+            <div class="cart__item__content__description">
+              <h2>${product.name}</h2>
+              <p>${produit.couleurChoisie}</p>
+              <p>${product.price} €</p>
+            </div>
+            <div class="cart__item__content__settings">
+              <div class="cart__item__content__settings__quantity">
+                <p>Qté : </p>
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100"  value="${produit.quantite}" data-id="${produit._id}" data-color="${produit.couleurChoisie}">
+              </div>
+              <div class="cart__item__content__settings__delete">
+               <p class="deleteItem" data-id="${produit._id}" data-color="${produit.couleurChoisie}">Supprimer</p>
+              </div>
+            </div>
+          </div>
+        </article>`
+
+        morelessQuantite();
+        deleteProduct();
+        claculProduit();
+      })
+    }
   } 
 }
-panierDisplay();
 
 
 // quantite parnier
@@ -100,7 +102,6 @@ const deleteProduct = async (panierDisplay) => {
     })
   })
 }
-
 // Total produit et quantite
 const claculProduit = async (panierDisplay, morelessQuantite, deleteProduct) => {
   await panierDisplay
@@ -111,25 +112,23 @@ const claculProduit = async (panierDisplay, morelessQuantite, deleteProduct) => 
 
   let produitPrice = [];
   let quantiteTotal = [];
-  let newTableau = JSON.parse(localStorage.getItem("produit"));
-  let afficheQuantite = document.querySelectorAll(".itemQuantity");
 
-  console.log(afficheQuantite);
+  for(let produit of addProduit){
+    fetch("http://localhost:3000/api/products" + "/" + produit._id)
+    .then(data => data.json())
+    .then(product =>{
+      produitPrice.push(product.price * produit.quantite)
+      quantiteTotal.push(produit.quantite)
+      console.log('Prix total :', produitPrice);
+      console.log('Quantité total :',quantiteTotal);
+
+      document.querySelector(".cart__price").innerHTML = `
+      <p>Total <span id="totalQuantity">${eval(quantiteTotal.join("+"))}</span> article(s) : <span id="totalPrice">${eval(produitPrice.join("+"))}</span> €</p>
+      `
+    })
+  }
   
-
-  newTableau.forEach((product) =>{
-    produitPrice.push(product.price * product.quantite)
-    quantiteTotal.push(product.quantite)
-  });
-  console.log('Prix total :', produitPrice);
-  console.log('Quantité total :',quantiteTotal);
-
-  document.querySelector(".cart__price").innerHTML = `
-  <p>Total <span id="totalQuantity">${eval(quantiteTotal.join("+"))}</span> article(s) : <span id="totalPrice">${eval(produitPrice.join("+"))}</span> €</p>
-  `
 }
-
-  
 
 //formulaire
 
@@ -315,4 +314,4 @@ function postForm (){
 } // fin envoi du formulaire postForm
 
 postForm();
-
+panierDisplay();
